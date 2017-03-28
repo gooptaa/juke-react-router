@@ -64,6 +64,10 @@
 	
 	var _Albums2 = _interopRequireDefault(_Albums);
 	
+	var _Album = __webpack_require__(207);
+	
+	var _Album2 = _interopRequireDefault(_Album);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	_reactDom2.default.render(_react2.default.createElement(
@@ -76,7 +80,9 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _AppContainer2.default },
 	      _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/albums' }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/albums', component: _Albums2.default })
+	      '// IndexRedirect usage: http://stackoverflow.com/questions/42322399/react-router-how-to-indexredirect-to-dynamic-route',
+	      _react2.default.createElement(_reactRouter.Route, { path: '/albums', component: _Albums2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/albums/:albumId', component: _Album2.default })
 	    )
 	  )
 	), document.getElementById('app'));
@@ -21592,8 +21598,8 @@
 	    _this.toggleOne = _this.toggleOne.bind(_this);
 	    _this.next = _this.next.bind(_this);
 	    _this.prev = _this.prev.bind(_this);
-	    _this.selectAlbum = _this.selectAlbum.bind(_this);
-	    _this.deselectAlbum = _this.deselectAlbum.bind(_this);
+	    // this.selectAlbum = this.selectAlbum.bind(this);
+	    // this.deselectAlbum = this.deselectAlbum.bind(this);
 	    return _this;
 	  }
 	
@@ -21676,24 +21682,19 @@
 	    value: function setProgress(progress) {
 	      this.setState({ progress: progress });
 	    }
-	  }, {
-	    key: 'selectAlbum',
-	    value: function selectAlbum(albumId) {
-	      var _this3 = this;
 	
-	      _axios2.default.get('/api/albums/' + albumId).then(function (res) {
-	        return res.data;
-	      }).then(function (album) {
-	        return _this3.setState({
-	          selectedAlbum: (0, _utils.convertAlbum)(album)
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'deselectAlbum',
-	    value: function deselectAlbum() {
-	      this.setState({ selectedAlbum: {} });
-	    }
+	    // selectAlbum (albumId) {
+	    //   axios.get(`/api/albums/${albumId}`)
+	    //     .then(res => res.data)
+	    //     .then(album => this.setState({
+	    //       selectedAlbum: convertAlbum(album)
+	    //     }));
+	    // }
+	
+	    // deselectAlbum () {
+	    //   this.setState({ selectedAlbum: {}});
+	    // }
+	
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -21703,7 +21704,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-xs-2' },
-	          _react2.default.createElement(_Sidebar2.default, { deselectAlbum: this.deselectAlbum })
+	          _react2.default.createElement(_Sidebar2.default, null)
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -23264,7 +23265,7 @@
 /* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23274,51 +23275,51 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(212);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Albums = function Albums(props) {
 	
 	  var albums = props.albums;
-	  var selectAlbum = props.selectAlbum;
+	  // const selectAlbum = props.selectAlbum;
 	
 	  return _react2.default.createElement(
-	    "div",
+	    'div',
 	    null,
 	    _react2.default.createElement(
-	      "h3",
+	      'h3',
 	      null,
-	      "Albums"
+	      'Albums'
 	    ),
 	    _react2.default.createElement(
-	      "div",
-	      { className: "row" },
+	      'div',
+	      { className: 'row' },
 	      albums.map(function (album) {
 	        return _react2.default.createElement(
-	          "div",
-	          { className: "col-xs-4", key: album.id },
+	          'div',
+	          { className: 'col-xs-4', key: album.id },
 	          _react2.default.createElement(
-	            "a",
-	            { className: "thumbnail", href: "#", onClick: function onClick() {
-	                return selectAlbum(album.id);
-	              } },
-	            _react2.default.createElement("img", { src: album.imageUrl }),
+	            _reactRouter.Link,
+	            { className: 'thumbnail', href: '#', to: '/albums/' + album.id },
+	            _react2.default.createElement('img', { src: album.imageUrl }),
 	            _react2.default.createElement(
-	              "div",
-	              { className: "caption" },
+	              'div',
+	              { className: 'caption' },
 	              _react2.default.createElement(
-	                "h5",
+	                'h5',
 	                null,
 	                _react2.default.createElement(
-	                  "span",
+	                  'span',
 	                  null,
 	                  album.name
 	                )
 	              ),
 	              _react2.default.createElement(
-	                "small",
+	                'small',
 	                null,
 	                album.songs.length,
-	                " songs"
+	                ' songs'
 	              )
 	            )
 	          )
@@ -23329,6 +23330,9 @@
 	};
 	
 	exports.default = Albums;
+	
+	// <a className="thumbnail" href="#" onClick={() => selectAlbum(album.id)}>
+	// </a>
 
 /***/ },
 /* 207 */
@@ -23340,6 +23344,8 @@
 	  value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -23348,35 +23354,77 @@
 	
 	var _Songs2 = _interopRequireDefault(_Songs);
 	
+	var _axios = __webpack_require__(179);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	var _utils = __webpack_require__(211);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Album = function Album(props) {
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  var album = props.album;
-	  var currentSong = props.currentSong;
-	  var isPlaying = props.isPlaying;
-	  var toggleOne = props.toggleOne;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'album' },
-	    _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'h3',
-	        null,
-	        album.name
-	      ),
-	      _react2.default.createElement('img', { src: album.imageUrl, className: 'img-thumbnail' })
-	    ),
-	    _react2.default.createElement(_Songs2.default, {
-	      songs: album.songs,
-	      currentSong: currentSong,
-	      isPlaying: isPlaying,
-	      toggleOne: toggleOne })
-	  );
-	};
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Album = function (_React$Component) {
+	  _inherits(Album, _React$Component);
+	
+	  function Album(props) {
+	    _classCallCheck(this, Album);
+	
+	    var _this = _possibleConstructorReturn(this, (Album.__proto__ || Object.getPrototypeOf(Album)).call(this));
+	
+	    _this.state = {
+	      album: {},
+	      currentSong: props.currentSong,
+	      isPlaying: props.isPlaying,
+	      toggleOne: props.toggleOne
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(Album, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+	
+	      console.log('this.props', this.props);
+	      _axios2.default.get('api/albums/' + this.props.routeParams.albumId).then(function (album) {
+	        console.log('returned album', album.data);
+	        _this2.setState({
+	          album: (0, _utils.convertAlbum)(album.data)
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'album' },
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            this.state.album.name
+	          ),
+	          _react2.default.createElement('img', { src: this.state.album.imageUrl, className: 'img-thumbnail' })
+	        ),
+	        _react2.default.createElement(_Songs2.default, {
+	          songs: this.state.album.songs,
+	          currentSong: this.state.currentSong,
+	          isPlaying: this.state.isPlaying,
+	          toggleOne: this.state.toggleOne })
+	      );
+	    }
+	  }]);
+	
+	  return Album;
+	}(_react2.default.Component);
 	
 	exports.default = Album;
 
@@ -23481,7 +23529,7 @@
 /* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -23491,26 +23539,28 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactRouter = __webpack_require__(212);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Sidebar = function Sidebar(props) {
+	var Sidebar = function Sidebar() {
 	
-	  var deselectAlbum = props.deselectAlbum;
+	  // const deselectAlbum = props.deselectAlbum;
 	
 	  return _react2.default.createElement(
-	    "sidebar",
+	    'sidebar',
 	    null,
-	    _react2.default.createElement("img", { src: "juke.svg", className: "logo" }),
+	    _react2.default.createElement('img', { src: 'juke.svg', className: 'logo' }),
 	    _react2.default.createElement(
-	      "section",
+	      'section',
 	      null,
 	      _react2.default.createElement(
-	        "h4",
-	        { className: "menu-item active" },
+	        'h4',
+	        { className: 'menu-item active' },
 	        _react2.default.createElement(
-	          "a",
-	          { href: "#", onClick: deselectAlbum },
-	          "ALBUMS"
+	          _reactRouter.Link,
+	          { href: '#', to: '/albums' },
+	          'ALBUMS'
 	        )
 	      )
 	    )
@@ -23518,6 +23568,8 @@
 	};
 	
 	exports.default = Sidebar;
+	
+	// <a href="#" onClick={deselectAlbum}>ALBUMS</a>
 
 /***/ },
 /* 210 */
@@ -23918,7 +23970,7 @@
 	
 	  var match = void 0,
 	      lastIndex = 0,
-	      matcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*\*|\*|\(|\)/g;
+	      matcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|\*\*|\*|\(|\)|\\\(|\\\)/g;
 	  while (match = matcher.exec(pattern)) {
 	    if (match.index !== lastIndex) {
 	      tokens.push(pattern.slice(lastIndex, match.index));
@@ -23938,6 +23990,10 @@
 	      regexpSource += '(?:';
 	    } else if (match[0] === ')') {
 	      regexpSource += ')?';
+	    } else if (match[0] === '\\(') {
+	      regexpSource += '\\(';
+	    } else if (match[0] === '\\)') {
+	      regexpSource += '\\)';
 	    }
 	
 	    tokens.push(match[0]);
@@ -24092,6 +24148,10 @@
 	      parenCount -= 1;
 	
 	      if (parenCount) parenHistory[parenCount - 1] += parenText;else pathname += parenText;
+	    } else if (token === '\\(') {
+	      pathname += '(';
+	    } else if (token === '\\)') {
+	      pathname += ')';
 	    } else if (token.charAt(0) === ':') {
 	      paramName = token.substring(1);
 	      paramValue = params[paramName];
@@ -24232,28 +24292,30 @@
 	    func = _React$PropTypes.func,
 	    object = _React$PropTypes.object;
 	
+	
+	var propTypes = {
+	  history: object,
+	  children: _InternalPropTypes.routes,
+	  routes: _InternalPropTypes.routes, // alias for children
+	  render: func,
+	  createElement: func,
+	  onError: func,
+	  onUpdate: func,
+	
+	  // PRIVATE: For client-side rehydration of server match.
+	  matchContext: object
+	};
+	
 	/**
 	 * A <Router> is a high-level API for automatically setting up
 	 * a router that renders a <RouterContext> with all the props
 	 * it needs each time the URL changes.
 	 */
-	
 	var Router = _react2.default.createClass({
 	  displayName: 'Router',
 	
 	
-	  propTypes: {
-	    history: object,
-	    children: _InternalPropTypes.routes,
-	    routes: _InternalPropTypes.routes, // alias for children
-	    render: func,
-	    createElement: func,
-	    onError: func,
-	    onUpdate: func,
-	
-	    // PRIVATE: For client-side rehydration of server match.
-	    matchContext: object
-	  },
+	  propTypes: propTypes,
 	
 	  getDefaultProps: function getDefaultProps() {
 	    return {
@@ -24302,7 +24364,7 @@
 	        children = _props.children;
 	
 	
-	    !history.getCurrentLocation ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'You have provided a history object created with history v2.x or ' + 'earlier. This version of React Router is only compatible with v3 ' + 'history objects. Please upgrade to history v3.x.') : (0, _invariant2.default)(false) : void 0;
+	    !history.getCurrentLocation ? process.env.NODE_ENV !== 'production' ? (0, _invariant2.default)(false, 'You have provided a history object created with history v4.x or v2.x ' + 'and earlier. This version of React Router is only compatible with v3 ' + 'history objects. Please change to history v3.x.') : (0, _invariant2.default)(false) : void 0;
 	
 	    return (0, _createTransitionManager3.default)(history, (0, _RouteUtils.createRoutes)(routes || children));
 	  },
@@ -24350,7 +24412,7 @@
 	
 	    // Only forward non-Router-specific props to routing context, as those are
 	    // the only ones that might be custom routing context props.
-	    Object.keys(Router.propTypes).forEach(function (propType) {
+	    Object.keys(propTypes).forEach(function (propType) {
 	      return delete props[propType];
 	    });
 	
@@ -24799,31 +24861,29 @@
 	      changeRoutes = void 0,
 	      enterRoutes = void 0;
 	  if (prevRoutes) {
-	    (function () {
-	      var parentIsLeaving = false;
-	      leaveRoutes = prevRoutes.filter(function (route) {
-	        if (parentIsLeaving) {
-	          return true;
-	        } else {
-	          var isLeaving = nextRoutes.indexOf(route) === -1 || routeParamsChanged(route, prevState, nextState);
-	          if (isLeaving) parentIsLeaving = true;
-	          return isLeaving;
-	        }
-	      });
+	    var parentIsLeaving = false;
+	    leaveRoutes = prevRoutes.filter(function (route) {
+	      if (parentIsLeaving) {
+	        return true;
+	      } else {
+	        var isLeaving = nextRoutes.indexOf(route) === -1 || routeParamsChanged(route, prevState, nextState);
+	        if (isLeaving) parentIsLeaving = true;
+	        return isLeaving;
+	      }
+	    });
 	
-	      // onLeave hooks start at the leaf route.
-	      leaveRoutes.reverse();
+	    // onLeave hooks start at the leaf route.
+	    leaveRoutes.reverse();
 	
-	      enterRoutes = [];
-	      changeRoutes = [];
+	    enterRoutes = [];
+	    changeRoutes = [];
 	
-	      nextRoutes.forEach(function (route) {
-	        var isNew = prevRoutes.indexOf(route) === -1;
-	        var paramsChanged = leaveRoutes.indexOf(route) !== -1;
+	    nextRoutes.forEach(function (route) {
+	      var isNew = prevRoutes.indexOf(route) === -1;
+	      var paramsChanged = leaveRoutes.indexOf(route) !== -1;
 	
-	        if (isNew || paramsChanged) enterRoutes.push(route);else changeRoutes.push(route);
-	      });
-	    })();
+	      if (isNew || paramsChanged) enterRoutes.push(route);else changeRoutes.push(route);
+	    });
 	  } else {
 	    leaveRoutes = [];
 	    changeRoutes = [];
@@ -24959,7 +25019,7 @@
 	  return runTransitionHooks(hooks.length, function (index, replace, next) {
 	    var wrappedNext = function wrappedNext() {
 	      if (enterHooks.has(hooks[index])) {
-	        next();
+	        next.apply(undefined, arguments);
 	        enterHooks.remove(hooks[index]);
 	      }
 	    };
@@ -24983,7 +25043,7 @@
 	  return runTransitionHooks(hooks.length, function (index, replace, next) {
 	    var wrappedNext = function wrappedNext() {
 	      if (changeHooks.has(hooks[index])) {
-	        next();
+	        next.apply(undefined, arguments);
 	        changeHooks.remove(hooks[index]);
 	      }
 	    };
@@ -25317,8 +25377,6 @@
 	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
 	exports.default = matchRoutes;
 	
 	var _AsyncUtils = __webpack_require__(223);
@@ -25385,9 +25443,14 @@
 	    if ((0, _PromiseUtils.isPromise)(indexRoutesReturn)) indexRoutesReturn.then(function (indexRoute) {
 	      return callback(null, (0, _RouteUtils.createRoutes)(indexRoute)[0]);
 	    }, callback);
-	  } else if (route.childRoutes) {
-	    (function () {
-	      var pathless = route.childRoutes.filter(function (childRoute) {
+	  } else if (route.childRoutes || route.getChildRoutes) {
+	    var onChildRoutes = function onChildRoutes(error, childRoutes) {
+	      if (error) {
+	        callback(error);
+	        return;
+	      }
+	
+	      var pathless = childRoutes.filter(function (childRoute) {
 	        return !childRoute.path;
 	      });
 	
@@ -25403,7 +25466,12 @@
 	      }, function (err, routes) {
 	        callback(null, routes);
 	      });
-	    })();
+	    };
+	
+	    var result = getChildRoutes(route, location, paramNames, paramValues, onChildRoutes);
+	    if (result) {
+	      onChildRoutes.apply(undefined, result);
+	    }
 	  } else {
 	    callback();
 	  }
@@ -25457,38 +25525,32 @@
 	    // By assumption, pattern is non-empty here, which is the prerequisite for
 	    // actually terminating a match.
 	    if (remainingPathname === '') {
-	      var _ret2 = function () {
-	        var match = {
-	          routes: [route],
-	          params: createParams(paramNames, paramValues)
-	        };
+	      var match = {
+	        routes: [route],
+	        params: createParams(paramNames, paramValues)
+	      };
 	
-	        getIndexRoute(route, location, paramNames, paramValues, function (error, indexRoute) {
-	          if (error) {
-	            callback(error);
-	          } else {
-	            if (Array.isArray(indexRoute)) {
-	              var _match$routes;
+	      getIndexRoute(route, location, paramNames, paramValues, function (error, indexRoute) {
+	        if (error) {
+	          callback(error);
+	        } else {
+	          if (Array.isArray(indexRoute)) {
+	            var _match$routes;
 	
-	              process.env.NODE_ENV !== 'production' ? (0, _routerWarning2.default)(indexRoute.every(function (route) {
-	                return !route.path;
-	              }), 'Index routes should not have paths') : void 0;
-	              (_match$routes = match.routes).push.apply(_match$routes, indexRoute);
-	            } else if (indexRoute) {
-	              process.env.NODE_ENV !== 'production' ? (0, _routerWarning2.default)(!indexRoute.path, 'Index routes should not have paths') : void 0;
-	              match.routes.push(indexRoute);
-	            }
-	
-	            callback(null, match);
+	            process.env.NODE_ENV !== 'production' ? (0, _routerWarning2.default)(indexRoute.every(function (route) {
+	              return !route.path;
+	            }), 'Index routes should not have paths') : void 0;
+	            (_match$routes = match.routes).push.apply(_match$routes, indexRoute);
+	          } else if (indexRoute) {
+	            process.env.NODE_ENV !== 'production' ? (0, _routerWarning2.default)(!indexRoute.path, 'Index routes should not have paths') : void 0;
+	            match.routes.push(indexRoute);
 	          }
-	        });
 	
-	        return {
-	          v: void 0
-	        };
-	      }();
+	          callback(null, match);
+	        }
+	      });
 	
-	      if ((typeof _ret2 === 'undefined' ? 'undefined' : _typeof(_ret2)) === "object") return _ret2.v;
+	      return;
 	    }
 	  }
 	
@@ -25997,11 +26059,6 @@
 	 * You could use the following component to link to that route:
 	 *
 	 *   <Link to={`/posts/${post.id}`} />
-	 *
-	 * Links may pass along location state and/or query string parameters
-	 * in the state/query props, respectively.
-	 *
-	 *   <Link ... query={{ show: true }} state={{ the: 'state' }} />
 	 */
 	var Link = _react2.default.createClass({
 	  displayName: 'Link',
@@ -26015,9 +26072,6 @@
 	
 	  propTypes: {
 	    to: oneOfType([string, object, func]),
-	    query: object,
-	    hash: string,
-	    state: object,
 	    activeStyle: object,
 	    activeClassName: string,
 	    onlyActiveOnIndex: bool.isRequired,
@@ -26066,7 +26120,7 @@
 	
 	    if (router) {
 	      // If user does not specify a `to` prop, return an empty anchor tag.
-	      if (to == null) {
+	      if (!to) {
 	        return _react2.default.createElement('a', props);
 	      }
 	
@@ -26183,6 +26237,10 @@
 	      var _this = this;
 	
 	      var router = this.props.router || this.context.router;
+	      if (!router) {
+	        return _react2.default.createElement(WrappedComponent, this.props);
+	      }
+	
 	      var params = router.params,
 	          location = router.location,
 	          routes = router.routes;
@@ -28309,12 +28367,7 @@
 	'use strict';
 	
 	exports.__esModule = true;
-	
-	exports.default = function (createHistory) {
-	  var history = void 0;
-	  if (canUseDOM) history = (0, _useRouterHistory2.default)(createHistory)();
-	  return history;
-	};
+	exports.default = createRouterHistory;
 	
 	var _useRouterHistory = __webpack_require__(254);
 	
@@ -28324,6 +28377,11 @@
 	
 	var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 	
+	function createRouterHistory(createHistory) {
+	  var history = void 0;
+	  if (canUseDOM) history = (0, _useRouterHistory2.default)(createHistory)();
+	  return history;
+	}
 	module.exports = exports['default'];
 
 /***/ },
