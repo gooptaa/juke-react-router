@@ -9,11 +9,11 @@ const Sidebar = () => {
     <sidebar>
       <img src="juke.svg" className="logo" />
       <section>
-        <h4 className="menu-item active">
-          <Link href="#" to={'/albums'}>ALBUMS</Link>
+        <h4 className="menu-item">
+          <Link href="#" activeClassName="active" to={'/albums'}>ALBUMS</Link>
         </h4>
-        <h4 className="menu-item active">
-          <Link href="#" to={'/artists'}>ARTISTS</Link>
+        <h4 className="menu-item">
+          <Link href="#" activeClassName="active" to={'/artists'}>ARTISTS</Link>
         </h4>
       </section>
     </sidebar>

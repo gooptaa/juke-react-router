@@ -34,23 +34,28 @@ export default class Artist extends React.Component {
 
     axios.all([artistRequest(), artistAlbumsRequest(), artistSongsRequest()])
       .then(axios.spread((artist, albums, songs) => {
+        console.log(artist)
         this.setState({
           name: artist.name,
           albums: convertAlbums(albums),
           songs: convertSongs(songs)
         })
       }))
-      .catch(console.error);
+      .catch(next());
   }
   render() {
-    return (<div>
-      <h3>{this.state.name}</h3>
-      <Albums albums={this.state.albums} />
-      <Songs
-        songs={this.state.songs}
-        currentSong={this.state.currentSong}
-        isPlaying={this.state.isPlaying}
-        toggleOne={this.state.toggleOne} />
-    </div>)
+    return (
+      <div>
+        <h3>{this.state.name}</h3>
+        <ul className="nav nav-tabs">
+          <li><Link to={`/artists/${this.props.routeParams.artistId}/albums`} >ALBUMS</Link></li>
+          <li><Link to={`/artists/${this.props.routeParams.artistId}/songs`}>SONGS</Link></li>
+        </ul>
+        {this.props.children && React.cloneElement(this.props.children, this.state)}
+      </div>
+    )
   }
 }
+
+
+

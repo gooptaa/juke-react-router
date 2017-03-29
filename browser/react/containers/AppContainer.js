@@ -4,10 +4,11 @@ import axios from 'axios';
 import initialState from '../initialState';
 import AUDIO from '../audio';
 
-import Albums from '../components/Albums.js';
-import Album from '../components/Album';
+// import Albums from '../components/Albums.js';
+// import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
 import Player from '../components/Player';
+
 
 import { convertAlbum, convertAlbums, skip } from '../utils';
 
