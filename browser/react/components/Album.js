@@ -14,7 +14,6 @@ class Album extends React.Component {
     }
   }
   componentDidMount() {
-    console.log('this.props', this.props);
     axios.get(`api/albums/${this.props.routeParams.albumId}`)
       .then(album => {
         console.log('returned album', album.data);

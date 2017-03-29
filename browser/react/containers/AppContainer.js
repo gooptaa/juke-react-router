@@ -26,9 +26,19 @@ export default class AppContainer extends Component {
   }
 
   componentDidMount () {
-    axios.get('/api/albums/')
-      .then(res => res.data)
-      .then(album => this.onLoad(convertAlbums(album)));
+    const albumsRequest = () => {
+      return axios.get('/api/albums/')
+      .then(res => res.data);
+    }
+    const artistsRequest = () => {
+      return axios.get('/api/artists/')
+      .then(res => res.data);
+    }
+    // concurrent request https://www.npmjs.com/package/axios
+    axios.all([albumsRequest(), artistsRequest()])
+    .then(axios.spread((albums, artists) => {
+      this.onLoad(convertAlbums(albums), artists)
+    }))
 
     AUDIO.addEventListener('ended', () =>
       this.next());
@@ -36,9 +46,10 @@ export default class AppContainer extends Component {
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
   }
 
-  onLoad (albums) {
+  onLoad (albums, artists) {
     this.setState({
-      albums: albums
+      albums: albums,
+      artists: artists,
     });
   }
 
@@ -117,11 +128,18 @@ export default class AppContainer extends Component {
                 album: this.state.selectedAlbum,
                 currentSong: this.state.currentSong,
                 isPlaying: this.state.isPlaying,
-                toggle: this.toggleOne,
+                toggleOne: this.toggleOne,
 
                 // Albums (plural) component's props
                 albums: this.state.albums,
-                selectAlbum: this.selectAlbum // note that this.selectAlbum is a method, and this.state.selectedAlbum is the chosen album
+                // selectAlbum: this.selectAlbum // note that this.selectAlbum is a method, and this.state.selectedAlbum is the chosen album
+
+                //Artist (singular) component's props
+                artist: this.state.selectedArtist,
+
+                // Artists (plural) component's props
+                artists: this.state.artists,
+
               })
               : null
           }

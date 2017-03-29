@@ -5,7 +5,8 @@ const Songs = (props) => {
   const songs = props.songs;
   const currentSong = props.currentSong;
   const isPlaying = props.isPlaying;
-  const toggle = props.toggleOne;
+  const toggleOne = props.toggleOne;
+  console.log('toggleOne', toggleOne);
 
   return (
     <table className='table'>
@@ -19,20 +20,22 @@ const Songs = (props) => {
       </thead>
       <tbody>
         {
-          songs && songs.map(song => (
-            <tr key={song.id}>
-              <td>
-                <button className="btn btn-default btn-xs" onClick={() => toggle(song, songs)}>
-                  <span className={song.id === currentSong.id && isPlaying ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play"}></span>
-                </button>
-              </td>
-              <td>{ song.name }</td>
-              <td>
-                <span>{ song.artists ? song.artists.map(artist => artist.name).join(', ') : null }</span>
-              </td>
-              <td>{ song.genre }</td>
-            </tr>
-          ))
+          songs && songs.map(song => {
+            return (
+              <tr key={song.id}>
+                <td>
+                  <button className="btn btn-default btn-xs" onClick={() => toggleOne(song, songs)}>
+                    <span className={song.id === currentSong.id && isPlaying ? "glyphicon glyphicon-pause" : "glyphicon glyphicon-play"}></span>
+                  </button>
+                </td>
+                <td>{song.name}</td>
+                <td>
+                  <span>{song.artists ? song.artists.map(artist => artist.name).join(', ') : null}</span>
+                </td>
+                <td>{song.genre}</td>
+              </tr>
+            )
+          })
         }
       </tbody>
     </table>

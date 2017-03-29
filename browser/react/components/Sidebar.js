@@ -12,6 +12,9 @@ const Sidebar = () => {
         <h4 className="menu-item active">
           <Link href="#" to={'/albums'}>ALBUMS</Link>
         </h4>
+        <h4 className="menu-item active">
+          <Link href="#" to={'/artists'}>ARTISTS</Link>
+        </h4>
       </section>
     </sidebar>
   );
